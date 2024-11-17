@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id               String   @id @default(uuid())
+  username         String   @unique
+  bio              String?
+  walletAddress    String   @unique
+  smartAccountAddr String   @unique
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([walletAddress])
+  @@index([smartAccountAddr])
+}

@@ -1,21 +1,25 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { PrivyProvider } from "@privy-io/react-auth";
-import { sepolia, polygonAmoy } from "viem/chains";
+import { sepolia, scrollSepolia, baseSepolia } from "viem/chains";
 import { ToastContainer } from "react-toastify";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <PrivyProvider
-        appId="clw95bhbz05cbua5qmnnx60zo" //Use your own appId from https://dashboard.privy.io/
+        appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string} //Use your own appId from https://dashboard.privy.io/
         config={{
-          supportedChains: [sepolia, polygonAmoy], // <-- Add your supported chains here
+          supportedChains: [baseSepolia], // <-- Add your supported chains here
           embeddedWallets: {
             createOnLogin: "users-without-wallets",
-            noPromptOnSignature: true,
+            noPromptOnSignature: false,
           },
-          loginMethods: ["email", "google", "twitter", "discord", "apple"], // <-- Add your supported login methods here
+          fiatOnRamp: {
+            useSandbox: true,
+          },
+          loginMethods: ["email"], // <-- Add your supported login methods here
+          // loginMethods: ["email", "google", "twitter", "discord", "apple"], // <-- Add your supported login methods here
         }}
       >
         <ToastContainer />
